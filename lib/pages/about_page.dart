@@ -125,6 +125,7 @@ class _AboutPageState extends State<AboutPage> {
           final isHidden = selected != null && selected != index;
 
           return AnimatedPositioned(
+            key: ValueKey(index),
             duration: const Duration(milliseconds: 450),
             curve: Curves.easeInOutCubic,
             left: rect.left,
