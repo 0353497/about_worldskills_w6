@@ -57,6 +57,8 @@ class _SkillsPageState extends State<SkillsPage> {
                 }
                 if (!asyncSnapshot.hasData) return Text("no data");
                 final skills = asyncSnapshot.data!;
+                final canGoPrev = _currentIndex > 0;
+                final canGoNext = _currentIndex < skills.length - 1;
                 return Column(
                   spacing: 12,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,12 +120,33 @@ class _SkillsPageState extends State<SkillsPage> {
                               BorderSide(width: 3, color: Color(0xffd52068)),
                             ),
                           ),
-                          onPressed: () {
-                            _pageController.nextPage(
-                              duration: 250.milliseconds,
-                              curve: Curves.easeOut,
-                            );
-                          },
+                          onPressed: canGoPrev
+                              ? () {
+                                  _pageController.previousPage(
+                                    duration: 250.milliseconds,
+                                    curve: Curves.easeOut,
+                                  );
+                                }
+                              : null,
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Color(0xffd52068),
+                          ),
+                        ),
+                        IconButton.outlined(
+                          style: ButtonStyle(
+                            side: WidgetStatePropertyAll(
+                              BorderSide(width: 3, color: Color(0xffd52068)),
+                            ),
+                          ),
+                          onPressed: canGoNext
+                              ? () {
+                                  _pageController.nextPage(
+                                    duration: 250.milliseconds,
+                                    curve: Curves.easeOut,
+                                  );
+                                }
+                              : null,
                           icon: Icon(
                             Icons.arrow_forward_ios,
                             color: Color(0xffd52068),
