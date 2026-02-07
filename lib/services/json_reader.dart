@@ -12,4 +12,9 @@ class JsonReader {
     final json = await rootBundle.loadString("assets/data/skills.json");
     return await jsonDecode(json);
   }
+
+  static Future<List> readAbout() async {
+    final json = await rootBundle.loadString("assets/data/about.json");
+    return await jsonDecode(json);
+  }
 }

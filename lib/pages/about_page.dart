@@ -1,3 +1,4 @@
+import 'package:about_worldskills/services/json_reader.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatefulWidget {
@@ -9,6 +10,13 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   int? _selectedIndex;
+  late final Future<List<dynamic>> _aboutFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _aboutFuture = JsonReader.readAbout();
+  }
 
   void _toggleSelection(int index) {
     setState(() {
@@ -91,111 +99,133 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final fullWidth = constraints.maxWidth;
-        final fullHeight = constraints.maxHeight;
-        final twoThirdsWidth = constraints.maxWidth / 3 * 2;
-        final oneThirdWidth = constraints.maxWidth / 3;
-        final halfHeight = constraints.maxHeight / 2;
-        final selected = _selectedIndex;
-
-        Rect panelRect(int index) {
-          if (selected == index) {
-            return Rect.fromLTWH(0, 0, fullWidth, fullHeight);
-          }
-
-          if (index == 0) {
-            return Rect.fromLTWH(0, 0, twoThirdsWidth, halfHeight);
-          }
-          if (index == 1) {
-            return Rect.fromLTWH(0, halfHeight, twoThirdsWidth, halfHeight);
-          }
-          return Rect.fromLTWH(twoThirdsWidth, 0, oneThirdWidth, fullHeight);
+    return FutureBuilder<List<dynamic>>(
+      future: _aboutFuture,
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: Text("loading data"));
+        }
+        if (!asyncSnapshot.hasData) {
+          return Center(child: Text("no data"));
         }
 
-        Widget panelWidget({
-          required int index,
-          required String imagePath,
-          required Color overlayColor,
-          required String label,
-          required String labelDescription,
-        }) {
-          final rect = panelRect(index);
-          final isHidden = selected != null && selected != index;
+        final aboutItems = asyncSnapshot.data!;
+        final panelImages = [
+          "assets/images/inspire.jpg",
+          "assets/images/develop.jpg",
+          "assets/images/influence.jpg",
+        ];
+        final panelOverlays = [
+          const Color.fromARGB(255, 5, 80, 140).withAlpha(170),
+          Colors.deepPurple.withAlpha(100),
+          const Color(0xafdd0a76),
+        ];
 
-          return AnimatedPositioned(
-            key: ValueKey(index),
-            duration: const Duration(milliseconds: 450),
-            curve: Curves.easeInOutCubic,
-            left: rect.left,
-            top: rect.top,
-            width: rect.width,
-            height: rect.height,
-            child: IgnorePointer(
-              ignoring: isHidden,
-              child: _buildPanel(
-                index: index,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final fullWidth = constraints.maxWidth;
+            final fullHeight = constraints.maxHeight;
+            final twoThirdsWidth = constraints.maxWidth / 3 * 2;
+            final oneThirdWidth = constraints.maxWidth / 3;
+            final halfHeight = constraints.maxHeight / 2;
+            final selected = _selectedIndex;
+
+            Rect panelRect(int index) {
+              if (selected == index) {
+                return Rect.fromLTWH(0, 0, fullWidth, fullHeight);
+              }
+
+              if (index == 0) {
+                return Rect.fromLTWH(0, 0, twoThirdsWidth, halfHeight);
+              }
+              if (index == 1) {
+                return Rect.fromLTWH(0, halfHeight, twoThirdsWidth, halfHeight);
+              }
+              return Rect.fromLTWH(
+                twoThirdsWidth,
+                0,
+                oneThirdWidth,
+                fullHeight,
+              );
+            }
+
+            Widget panelWidget({
+              required int index,
+              required String imagePath,
+              required Color overlayColor,
+              required String label,
+              required String labelDescription,
+            }) {
+              final rect = panelRect(index);
+              final isHidden = selected != null && selected != index;
+
+              return AnimatedPositioned(
+                key: ValueKey(index),
+                duration: const Duration(milliseconds: 450),
+                curve: Curves.easeInOutCubic,
+                left: rect.left,
+                top: rect.top,
                 width: rect.width,
                 height: rect.height,
-                imagePath: imagePath,
-                overlayColor: overlayColor,
-                labelDescription: labelDescription,
-                label: label,
-              ),
-            ),
-          );
-        }
+                child: IgnorePointer(
+                  ignoring: isHidden,
+                  child: _buildPanel(
+                    index: index,
+                    width: rect.width,
+                    height: rect.height,
+                    imagePath: imagePath,
+                    overlayColor: overlayColor,
+                    labelDescription: labelDescription,
+                    label: label,
+                  ),
+                ),
+              );
+            }
 
-        final panels = [
-          panelWidget(
-            index: 0,
-            imagePath: "assets/images/inspire.jpg",
-            overlayColor: const Color.fromARGB(255, 5, 80, 140).withAlpha(170),
-            label: "Inspire",
-            labelDescription:
-                "We inspre youg people to develop a \n passion for skills and pursuing excellence. \n through competitions and promotions.",
-          ),
-          panelWidget(
-            index: 1,
-            imagePath: "assets/images/develop.jpg",
-            overlayColor: Colors.deepPurple.withAlpha(100),
-            label: "Develop",
-            labelDescription:
-                "We develop skills through global training \n standards, benchmarking systems, and \n enhancing industry engagement.",
-          ),
-          panelWidget(
-            index: 2,
-            imagePath: "assets/images/influence.jpg",
-            overlayColor: const Color(0xafdd0a76),
-            label: "Influence",
-            labelDescription:
-                "We influence industry, goverment, and \n educators through cooperation and research \n -- building a global platform of skills for all",
-          ),
-        ];
-        if (selected != null) {
-          final selectedPanel = panels.removeAt(selected);
-          panels.add(selectedPanel);
-        }
-        return Column(
-          spacing: 12,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(),
-            Text(
-              "About",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900),
-            ),
-            Container(
-              width: 20,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Color(0xffdd0a76),
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            Expanded(child: Stack(children: panels)),
-          ],
+            final panelCount = [
+              aboutItems.length,
+              panelImages.length,
+              panelOverlays.length,
+            ].reduce((value, element) => value < element ? value : element);
+
+            final panels = List.generate(panelCount, (index) {
+              final item = aboutItems[index] as Map<String, dynamic>;
+              final label = item["title"]?.toString() ?? "";
+              final description = item["content"]?.toString() ?? "";
+              return panelWidget(
+                index: index,
+                imagePath: panelImages[index],
+                overlayColor: panelOverlays[index],
+                label: label,
+                labelDescription: description,
+              );
+            });
+
+            if (selected != null && selected < panels.length) {
+              final selectedPanel = panels.removeAt(selected);
+              panels.add(selectedPanel);
+            }
+            return Column(
+              spacing: 12,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(),
+                Text(
+                  "About",
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900),
+                ),
+                Container(
+                  width: 20,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Color(0xffdd0a76),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                Expanded(child: Stack(children: panels)),
+              ],
+            );
+          },
         );
       },
     );
