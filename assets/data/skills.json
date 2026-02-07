@@ -1,0 +1,42 @@
+[
+  {
+    "skill": "Cloud Computing",
+    "image": "wse118c81b-680f-4fc7-9381-2812c842a911_medium.jpeg",
+    "description": "Cloud computing has become a key part of corporate digital transformation strategy as companies migrate their physical IT activities, such as file storage and on-site servers, into a virtual environment."
+  },
+  {
+    "skill": "Cyber Security",
+    "image": "ws2aa77286-c04c-4bce-9e95-e28c32eb45c9_medium.jpeg",
+    "description": "Information security analysts work to protect an organization’s computer systems networks, to prevent hackers from accessing and/or stealing sensitive information and data."
+  },
+  {
+    "skill": "Information Network Cabling",
+    "image": "ws284b19db-c28f-4f8e-84c0-2ea5e34a95a9_medium.jpeg",
+    "description": "Designing and installing cable systems for telecommunication and network communications."
+  },
+  {
+    "skill": "IT Network Systems Administration",
+    "image": "wsb9653609-7f55-4e3c-89f5-e77330b713d4_medium.jpeg",
+    "description": "Providing information technology (IT) services to commercial and public sectors to ensure systems run smoothly and without interruption."
+  },
+  {
+    "skill": "IT Software Solutions for Business",
+    "image": "wsd0ef5683-83dc-4920-87b4-4f07e6cbecee_medium.jpeg",
+    "description": "Creating new systems and modifying existing ones to provide software solutions to large and small businesses."
+  },
+  {
+    "skill": "Mobile Applications Development",
+    "image": "wscd12ee3f-ebc9-4081-9cdb-43e003a876ed_medium.jpeg",
+    "description": "Mobile Applications Developers use technology and design to create apps which are appealing and function well on phones."
+  },
+  {
+    "skill": "Print Media Technology",
+    "image": "ws20ae45a8-a914-40ac-a6aa-d91d8d636400_medium.jpeg",
+    "description": "Keeping the presses rolling for all kinds of printed materials that are needed by a wide range of customers."
+  },
+  {
+    "skill": "Web Technologies",
+    "image": "ws72dbd2f9-281e-41cf-9349-77bee08d63cd_medium.jpeg",
+    "description": "Planning and designing, as well as testing websites, maintaining them, incorporating third party platforms, and integrating social media platforms."
+  }
+]

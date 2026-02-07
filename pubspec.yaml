@@ -1,0 +1,33 @@
+name: about_worldskills
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.7.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+    - assets/data/
+
+
+  fonts:
+    - family: "Frutiger"
+      fonts:
+        - asset: assets/fonts/Frutiger.ttf
+        - asset: assets/fonts/Frutiger_bold.ttf
+          weight: 700
